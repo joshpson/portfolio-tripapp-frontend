@@ -1,12 +1,12 @@
-import React from 'react';
-import { Form, Input } from 'semantic-ui-react';
+import React from "react";
+import { Form, Input } from "semantic-ui-react";
 
-import YelpDistanceFilter from './YelpDistanceFilter';
+import YelpDistanceFilter from "./YelpDistanceFilter";
 
 class YelpCategoryFilter extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { categories: [], loading: false, value: '' };
+    this.state = { categories: [], loading: false, value: "" };
   }
 
   componentDidMount() {
@@ -15,13 +15,13 @@ class YelpCategoryFilter extends React.Component {
 
   getCategories = () => {
     fetch(
-      'https://cryptic-headland-94862.herokuapp.com/https://api.yelp.com/v3/categories??locale=en_US',
+      "https://cryptic-headland-94862.herokuapp.com/https://api.yelp.com/v3/categories??locale=en_US",
       {
         headers: {
           authorization:
-            'Bearer B0_o-WOtonclsraT47gpBMjFd_jGrcgkYkl6O74pf4ETwW_GBcfXgSdCbXjffWEsF2gYeFA54QnyG3sKi48covsP2qsu5wrBivNEHNqdUaS1rGcScv0Es8a8OXY_W3Yx',
-        },
-      },
+            "Bearer B0_o-WOtonclsraT47gpBMjFd_jGrcgkYkl6O74pf4ETwW_GBcfXgSdCbXjffWEsF2gYeFA54QnyG3sKi48covsP2qsu5wrBivNEHNqdUaS1rGcScv0Es8a8OXY_W3Yx"
+        }
+      }
     )
       .then(res => res.json())
       .then(json => this.formatCategories(json));
@@ -30,14 +30,14 @@ class YelpCategoryFilter extends React.Component {
   formatCategories = ({ categories }) => {
     const categoriesToSet = [];
     const filteredCategories = categories.filter(category =>
-      category.parent_aliases.includes('restaurants'),
+      category.parent_aliases.includes("restaurants")
     );
     filteredCategories.forEach(category =>
       categoriesToSet.push({
         key: category.alias,
         text: category.title,
-        value: category.alias,
-      }),
+        value: category.alias
+      })
     );
     this.setState({ categories: categoriesToSet, loading: false });
   };
@@ -58,15 +58,15 @@ class YelpCategoryFilter extends React.Component {
             <div>
               <Input
                 list="categories"
-                placeholder="Choose a category or search..."
+                placeholder="Search for a type of food..."
                 onChange={this.handleChange}
                 value={this.state.value}
               />
-              <datalist id="categories">
+              {/*    <datalist id="categories">
                 {this.state.categories.map(option => (
                   <option value={option.text} key={option.value} />
                 ))}
-              </datalist>
+              </datalist>*/}
             </div>
           </Form.Field>
           <Form.Field>

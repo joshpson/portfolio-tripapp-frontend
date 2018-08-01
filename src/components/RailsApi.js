@@ -67,6 +67,21 @@ export default {
     });
   },
 
+  searchYelp: data => {
+    return fetch(
+      `${url}/search?query=${data.query}&address_latitude=${
+        data.latitude
+      }&address_longitude=${data.longitude}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token()}`
+        }
+      }
+    );
+  },
+
   addUser: userInfo =>
     fetch(`${url}/users`, {
       method: "POST",

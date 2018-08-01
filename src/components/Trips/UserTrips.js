@@ -15,15 +15,17 @@ class UserTrips extends React.Component {
   };
 
   archiveTrip = tripId => {
-    RailsApi.archiveTrip(tripId);
-    this.props.updateTrips();
+    console.log("archive");
+    RailsApi.archiveTrip(tripId).then(res => {
+      this.props.updateTrips();
+    });
   };
 
   render() {
     return (
       <Card.Group>
         {this.activeTrips().map(trip => (
-          <Card>
+          <Card key={trip.id}>
             <Image src={trip.image} />
             <Card.Content>
               <Card.Header>

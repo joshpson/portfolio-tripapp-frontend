@@ -21,7 +21,7 @@ class Nav extends React.Component {
     return (
       <div>
         {this.props.user ? (
-          <Menu inverted size="large" color="blue">
+          <Menu inverted size="large" color="orange">
             <Menu.Item>{this.props.user.email}</Menu.Item>
             <Menu.Item
               as={Link}
@@ -46,8 +46,8 @@ class Nav extends React.Component {
             </Menu.Menu>
           </Menu>
         ) : (
-          <Menu inverted size="large" color="blue">
-            <Menu.Item name="Trippr" active={true} />{" "}
+          <Menu inverted size="large" color="orange">
+            <Menu.Item name="HungryTrips" active={true} />{" "}
           </Menu>
         )}
         <Divider horizontal />

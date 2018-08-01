@@ -1,13 +1,22 @@
-import React from 'react';
-import { Grid, Loader, Item, Header, Button, Icon, Divider } from 'semantic-ui-react';
-import distance from '@turf/distance';
+import React from "react";
+import {
+  Grid,
+  Loader,
+  Item,
+  Header,
+  Button,
+  Icon,
+  Divider
+} from "semantic-ui-react";
+import distance from "@turf/distance";
 
-import YelpSearchCard from './YelpSearchCard';
-import YelpCategoryFilter from './YelpCategoryFilter';
-import Error from '../Error';
-import Map from '../Map/Map';
-import MapDirections from '../Map/MapDirections';
-import MapDirectionsFilter from '../Map/MapDirectionsFilter';
+import YelpSearchCard from "./YelpSearchCard";
+import YelpCategoryFilter from "./YelpCategoryFilter";
+import Error from "../Error";
+import Map from "../Map/Map";
+import MapDirections from "../Map/MapDirections";
+import MapDirectionsFilter from "../Map/MapDirectionsFilter";
+import RailsApi from "../RailsApi";
 
 class YelpSearchContainer extends React.Component {
   constructor(props) {
@@ -17,9 +26,9 @@ class YelpSearchContainer extends React.Component {
       loading: false,
       complete: false,
       filteredResults: [],
-      searchDistance: '',
-      destination: '',
-      directionsType: 'driving',
+      searchDistance: "",
+      destination: "",
+      directionsType: "driving"
     };
   }
 
@@ -28,38 +37,34 @@ class YelpSearchContainer extends React.Component {
     sortedResults.map(result => {
       const to = [result.coordinates.longitude, result.coordinates.latitude];
       const from = [this.props.longitude, this.props.latitude];
-      const options = { units: 'miles' };
+      const options = { units: "miles" };
       const userDistance = distance(from, to, options);
       result.distance = userDistance;
     });
     sortedResults.sort((a, b) => b.rating - a.rating);
-    const initialResults = sortedResults.filter(result => result.distance <= 1).slice(0, 5);
+    const initialResults = sortedResults
+      .filter(result => result.distance <= 1)
+      .slice(0, 5);
     this.setState({
       results: sortedResults,
       loading: false,
       complete: true,
       error: false,
       filteredResults: initialResults,
-      searchDistance: 'The best within a mile',
-      destination: '',
+      searchDistance: "The best within a mile",
+      destination: ""
     });
   };
 
   getYelpResults = category => {
     this.setState({
-      loading: true,
+      loading: true
     });
-    fetch(
-      `https://cryptic-headland-94862.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${category}&latitude=${
-        this.props.latitude
-      }&longitude=${this.props.longitude}`,
-      {
-        headers: {
-          authorization:
-            'Bearer B0_o-WOtonclsraT47gpBMjFd_jGrcgkYkl6O74pf4ETwW_GBcfXgSdCbXjffWEsF2gYeFA54QnyG3sKi48covsP2qsu5wrBivNEHNqdUaS1rGcScv0Es8a8OXY_W3Yx',
-        },
-      },
-    )
+    RailsApi.searchYelp({
+      query: category,
+      latitude: this.props.latitude,
+      longitude: this.props.longitude
+    })
       .catch(this.handleError)
       .then(res => res.json())
       .then(json => this.setResults(json.businesses));
@@ -72,20 +77,24 @@ class YelpSearchContainer extends React.Component {
   filterDistance = data => {
     let filteredResults = this.state.results.slice();
     let searchDistance;
-    if (data === 1 || typeof data === 'undefined') {
-      filteredResults = this.state.results.filter(result => result.distance <= 1).slice(0, 5);
-      searchDistance = 'The best within a mile';
+    if (data === 1 || typeof data === "undefined") {
+      filteredResults = this.state.results
+        .filter(result => result.distance <= 1)
+        .slice(0, 5);
+      searchDistance = "The best within a mile";
     } else if (data === 2) {
-      filteredResults = this.state.results.filter(result => result.distance <= 3).slice(0, 5);
-      searchDistance = 'The best within three miles';
+      filteredResults = this.state.results
+        .filter(result => result.distance <= 3)
+        .slice(0, 5);
+      searchDistance = "The best within three miles";
     } else if (data === 3) {
       filteredResults = this.state.results.slice(0, 5);
-      searchDistance = 'The best in the area';
+      searchDistance = "The best in the area";
     }
     this.setState({
       filteredResults: filteredResults,
       searchDistance: searchDistance,
-      destination: '',
+      destination: ""
     });
   };
 
@@ -94,17 +103,17 @@ class YelpSearchContainer extends React.Component {
   };
 
   removeDestination = () => {
-    this.setState({ destination: '' });
+    this.setState({ destination: "" });
   };
 
   setDirectionType = (event, data) => {
     let directionsType;
-    if (data.value === 1 || typeof data.value === 'undefined') {
-      directionsType = 'driving';
+    if (data.value === 1 || typeof data.value === "undefined") {
+      directionsType = "driving";
     } else if (data.value === 2) {
-      directionsType = 'walking';
+      directionsType = "walking";
     } else if (data.value === 3) {
-      directionsType = 'cycling';
+      directionsType = "cycling";
     }
     this.setState({ directionsType: directionsType });
   };
@@ -114,14 +123,19 @@ class YelpSearchContainer extends React.Component {
       <Grid columns={1}>
         <Grid.Column>
           {this.state.error === true ||
-            (typeof this.state.results === 'undefined' && (
-              <Error message={'Location not found. Please select a trip'} color={'red'} />
+            (typeof this.state.results === "undefined" && (
+              <Error
+                message={"Location not found. Please select a trip"}
+                color={"red"}
+              />
             ))}
           {this.state.complete === true &&
             this.state.filteredResults.length === 0 && (
               <Error
-                message={'No results found, please adjust your distance filter or search again.'}
-                color={'brown'}
+                message={
+                  "No results found, please adjust your distance filter or search again."
+                }
+                color={"brown"}
               />
             )}
           {this.state.loading === false && (
@@ -159,7 +173,7 @@ class YelpSearchContainer extends React.Component {
                 </Item.Group>
               </Grid.Column>
               <Grid.Column>
-                {this.state.destination === '' ? (
+                {this.state.destination === "" ? (
                   <Map
                     points={this.state.filteredResults}
                     userLocation={[this.props.longitude, this.props.latitude]}
@@ -172,9 +186,13 @@ class YelpSearchContainer extends React.Component {
                     </Button>
                     <Header as="h2">
                       Directions to {this.state.destination.name}
-                      <Header.Subheader>{this.state.directionsType}</Header.Subheader>
+                      <Header.Subheader>
+                        {this.state.directionsType}
+                      </Header.Subheader>
                     </Header>
-                    <MapDirectionsFilter setDirectionType={this.setDirectionType} />
+                    <MapDirectionsFilter
+                      setDirectionType={this.setDirectionType}
+                    />
                     <MapDirections
                       userLocation={[this.props.longitude, this.props.latitude]}
                       destination={this.state.destination}
