@@ -9,7 +9,6 @@ import {
   Divider
 } from "semantic-ui-react";
 import distance from "@turf/distance";
-
 import YelpSearchCard from "./YelpSearchCard";
 import YelpCategoryFilter from "./YelpCategoryFilter";
 import Error from "../Error";

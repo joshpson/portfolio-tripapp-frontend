@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Input } from "semantic-ui-react";
-
+import RailsApi from "../RailsApi";
 import YelpDistanceFilter from "./YelpDistanceFilter";
 
 class YelpCategoryFilter extends React.Component {
@@ -14,17 +14,11 @@ class YelpCategoryFilter extends React.Component {
   }
 
   getCategories = () => {
-    fetch(
-      "https://cryptic-headland-94862.herokuapp.com/https://api.yelp.com/v3/categories??locale=en_US",
-      {
-        headers: {
-          authorization:
-            "Bearer B0_o-WOtonclsraT47gpBMjFd_jGrcgkYkl6O74pf4ETwW_GBcfXgSdCbXjffWEsF2gYeFA54QnyG3sKi48covsP2qsu5wrBivNEHNqdUaS1rGcScv0Es8a8OXY_W3Yx"
-        }
-      }
-    )
+    RailsApi.yelpCategories()
       .then(res => res.json())
-      .then(json => this.formatCategories(json));
+      .then(json => {
+        this.formatCategories(json);
+      });
   };
 
   formatCategories = ({ categories }) => {
@@ -62,11 +56,11 @@ class YelpCategoryFilter extends React.Component {
                 onChange={this.handleChange}
                 value={this.state.value}
               />
-              {/*    <datalist id="categories">
+              <datalist id="categories">
                 {this.state.categories.map(option => (
                   <option value={option.text} key={option.value} />
                 ))}
-              </datalist>*/}
+              </datalist>
             </div>
           </Form.Field>
           <Form.Field>

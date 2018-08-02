@@ -82,6 +82,26 @@ export default {
     );
   },
 
+  yelpCategories: () => {
+    return fetch(`${url}/categories`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token()}`
+      }
+    });
+  },
+
+  searchPhoto: businessId => {
+    return fetch(`${url}/photos?business=${businessId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token()}`
+      }
+    });
+  },
+
   addUser: userInfo =>
     fetch(`${url}/users`, {
       method: "POST",
