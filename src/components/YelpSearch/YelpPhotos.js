@@ -14,7 +14,7 @@ class YelpPhotos extends React.Component {
   };
 
   getInfo = id => {
-    RailsApi.searchPhoto(id)
+    RailsApi.yelpPhotos(id)
       .then(res => res.json())
       .then(json => this.setInfo(json));
   };

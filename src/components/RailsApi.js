@@ -67,6 +67,23 @@ export default {
     });
   },
 
+  getDirections: data => {
+    return fetch(
+      `${url}/directions?directionsType=${data.directionsType}&userLong=${
+        data.userLong
+      }&userLat=${data.userLat}&destLong=${data.destLong}&destLat=${
+        data.destLat
+      }`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token()}`
+        }
+      }
+    );
+  },
+
   searchYelp: data => {
     return fetch(
       `${url}/search?query=${data.query}&address_latitude=${
@@ -92,7 +109,7 @@ export default {
     });
   },
 
-  searchPhoto: businessId => {
+  yelpPhotos: businessId => {
     return fetch(`${url}/photos?business=${businessId}`, {
       headers: {
         "Content-Type": "application/json",
