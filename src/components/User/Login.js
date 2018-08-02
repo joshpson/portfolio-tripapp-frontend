@@ -59,13 +59,11 @@ class Login extends React.Component {
 
   loginUser = () => {
     localStorage.removeItem("token");
-    console.log(this.state);
     RailsApi.login({
       auth: { email: this.state.email, password: this.state.password }
     })
       .then(res => res.json())
       .then(token => {
-        console.log(token.jwt);
         localStorage.setItem("token", token.jwt);
         RailsApi.getUser(token.jwt)
           .then(res => res.json())
@@ -80,7 +78,6 @@ class Login extends React.Component {
         password: this.state.password
       }
     }).then(res => {
-      console.log(this.state);
       if (res.status === 202) {
         this.loginUser();
       } else {

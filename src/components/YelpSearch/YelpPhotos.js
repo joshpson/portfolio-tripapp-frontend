@@ -28,39 +28,37 @@ class YelpPhotos extends React.Component {
   };
 
   render() {
-    {
-      if (this.state.loaded === false) {
-        return (
-          <Modal
-            trigger={
-              <Button basic floated="right" onClick={this.handleClick}>
-                Photos
-              </Button>
-            }
-          >
-            <Loader active inline="centered" />
-          </Modal>
-        );
-      } else {
-        return (
-          <Modal
-            trigger={
-              <Button basic floated="right" onClick={this.handleClick}>
-                Photos
-              </Button>
-            }
-          >
-            <Modal.Header>{this.state.name}</Modal.Header>
-            <Modal.Content>
-              <Card.Group centered itemsPerRow={3}>
-                {this.state.photos.map(photo => (
-                  <Card image={photo} verticalAlign="middle" />
-                ))}
-              </Card.Group>
-            </Modal.Content>
-          </Modal>
-        );
-      }
+    if (this.state.loaded === false) {
+      return (
+        <Modal
+          trigger={
+            <Button basic floated="right" onClick={this.handleClick}>
+              Photos
+            </Button>
+          }
+        >
+          <Loader active inline="centered" />
+        </Modal>
+      );
+    } else {
+      return (
+        <Modal
+          trigger={
+            <Button basic floated="right" onClick={this.handleClick}>
+              Photos
+            </Button>
+          }
+        >
+          <Modal.Header>{this.state.name}</Modal.Header>
+          <Modal.Content>
+            <Card.Group centered itemsPerRow={3}>
+              {this.state.photos.map(photo => (
+                <Card image={photo} verticalAlign="middle" />
+              ))}
+            </Card.Group>
+          </Modal.Content>
+        </Modal>
+      );
     }
   }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Segment } from "semantic-ui-react";
+import { Segment } from "semantic-ui-react";
 import SearchBar from "./SearchBar";
 import SearchHeader from "./SearchHeader";
 

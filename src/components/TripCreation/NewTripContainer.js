@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Grid, Segment, Icon } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import SearchContainer from "./LocationSearch/SearchContainer";
 import md5 from "js-md5";
 import NewTripForm from "./NewTripForm";

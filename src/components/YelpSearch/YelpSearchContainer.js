@@ -33,7 +33,7 @@ class YelpSearchContainer extends React.Component {
 
   setResults = results => {
     const sortedResults = results.slice();
-    sortedResults.map(result => {
+    sortedResults.forEach(result => {
       const to = [result.coordinates.longitude, result.coordinates.latitude];
       const from = [this.props.longitude, this.props.latitude];
       const options = { units: "miles" };

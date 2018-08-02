@@ -1,7 +1,10 @@
 import React from "react";
-import { Form, Input, Icon, Segment, List } from "semantic-ui-react";
-import _ from "lodash";
+import debounce from "lodash/debounce";
+import { Form, Input, Segment, List } from "semantic-ui-react";
+
 import SearchResults from "./SearchResults";
+import RailsApi from "../../RailsApi";
+
 import Error from "../../Error";
 
 class SearchBar extends React.Component {
@@ -10,31 +13,22 @@ class SearchBar extends React.Component {
     this.state = {
       search: "",
       results: [],
-
       error: false
     };
   }
 
-  searchforLocation = () => {
-    if (this.state.search.length > 1) {
-      this.fetchLocationFrag();
-    } else {
-      this.setState({ results: [] });
-    }
-  };
-
-  fetchLocationFrag = () => {
-    fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${
-        this.state.search
-      }.json?access_token=pk.eyJ1IjoiYWRhbWNvaG4iLCJhIjoiY2pod2Z5ZWQzMDBtZzNxcXNvaW8xcGNiNiJ9.fHYsK6UNzqknxKuchhfp7A&country=us`
-    )
+  searchforLocation = debounce(() => {
+    RailsApi.searchMapBox(this.state.search.split(" ").join("_"))
       .then(res => res.json())
-      .then(json => this.setState({ results: json.features.slice(0, 5) }));
-  };
+      .then(json => {
+        if (json.features) {
+          this.setState({ results: json.features });
+        }
+      });
+  }, 200);
 
   locationError = () => {
-    this.setState({ error: true }), this.props.history.push("/home");
+    this.setState({ error: true }, this.props.history.push("/home"));
   };
 
   handleError = () => {
@@ -42,21 +36,16 @@ class SearchBar extends React.Component {
       {
         search: "",
         results: []
-        // loading: false,
       },
       this.locationError()
     );
   };
 
   handleChange = event => {
-    this.setState(
-      { search: event.target.value },
-      _.debounce(this.searchforLocation, 100)
-    );
+    this.setState({ search: event.target.value }, this.searchforLocation());
   };
 
   getLocationFromList = element => {
-    console.log(element);
     this.props.saveLocation(element.result);
   };
 
@@ -79,9 +68,7 @@ class SearchBar extends React.Component {
                 placeholder="Search..."
                 onChange={this.handleChange}
                 value={this.state.search}
-              >
-                <input />
-              </Input>
+              />
             )}
           </Form.Field>
         </Form>

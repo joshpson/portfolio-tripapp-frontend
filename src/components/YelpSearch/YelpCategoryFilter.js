@@ -56,11 +56,13 @@ class YelpCategoryFilter extends React.Component {
                 onChange={this.handleChange}
                 value={this.state.value}
               />
-              <datalist id="categories">
-                {this.state.categories.map(option => (
-                  <option value={option.text} key={option.value} />
-                ))}
-              </datalist>
+              {this.state.value ? (
+                <datalist id="categories">
+                  {this.state.categories.map(option => (
+                    <option value={option.text} key={option.value} />
+                  ))}
+                </datalist>
+              ) : null}
             </div>
           </Form.Field>
           <Form.Field>

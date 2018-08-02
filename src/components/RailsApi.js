@@ -1,3 +1,4 @@
+// const url = "https://afternoon-anchorage-69912.herokuapp.com/api/v1";
 const url = "http://localhost:3000/api/v1";
 
 const token = () => {
@@ -97,6 +98,16 @@ export default {
         }
       }
     );
+  },
+
+  searchMapBox: query => {
+    return fetch(`${url}/mapbox?query=${query}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token()}`
+      }
+    });
   },
 
   yelpCategories: () => {
