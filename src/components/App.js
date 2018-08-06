@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, withRouter } from "react-router-dom";
+import { Route, Switch, withRouter, Redirect } from "react-router-dom";
 import { Segment } from "semantic-ui-react";
 import Nav from "./Nav";
 import RailsApi from "./RailsApi";
@@ -26,7 +26,7 @@ class App extends React.Component {
       },
       () => {
         this.updateTrips();
-        this.props.history.push("/");
+        this.props.history.push("/create-trip");
       }
     );
   };
@@ -60,7 +60,6 @@ class App extends React.Component {
                 }}
               />
               <Route
-                exact
                 path="/create-trip"
                 render={props => {
                   return (

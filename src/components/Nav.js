@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { activeItem: "home" };
+    this.state = { activeItem: "New Trip" };
   }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -22,21 +22,22 @@ class Nav extends React.Component {
       <div>
         {this.props.user ? (
           <Menu inverted size="large" color="orange">
-            <Menu.Item>{this.props.user.email}</Menu.Item>
-            <Menu.Item
-              as={Link}
-              to={`/`}
-              name="Trips"
-              active={activeItem === "home"}
-              onClick={this.handleItemClick}
-            />
+            <Menu.Item name="HungryTrips" />
             <Menu.Item
               as={Link}
               to={`/create-trip`}
-              name="Create Trip"
-              active={activeItem === "trips"}
+              name="New Trip"
+              active={activeItem === "New Trip"}
               onClick={this.handleItemClick}
             />
+            <Menu.Item
+              as={Link}
+              to={`/`}
+              name="My Trips"
+              active={activeItem === "My Trips"}
+              onClick={this.handleItemClick}
+            />
+
             <Menu.Menu position="right">
               <Menu.Item>
                 <Button onClick={this.logout} as={Link} to={`/`} primary>
@@ -47,7 +48,7 @@ class Nav extends React.Component {
           </Menu>
         ) : (
           <Menu inverted size="large" color="orange">
-            <Menu.Item name="HungryTrips" active={true} />{" "}
+            <Menu.Item name="HungryTrips" active={true} />
           </Menu>
         )}
         <Divider horizontal />

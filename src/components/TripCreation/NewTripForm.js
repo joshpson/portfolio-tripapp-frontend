@@ -2,13 +2,15 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Form, Grid, Segment, Header, Icon } from "semantic-ui-react";
+import Error from "../Error";
 
 class NewTripForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       startDate: null,
-      endDate: null
+      endDate: null,
+      error: null
     };
   }
 
@@ -30,12 +32,24 @@ class NewTripForm extends React.Component {
       start_date: this.state.startDate,
       end_date: this.state.endDate
     };
-    this.props.postTrip(formData);
+    if (
+      this.state.startDate &&
+      this.state.endDate &&
+      this.state.startDate < this.state.endDate &&
+      this.state.startDate > Date.now()
+    ) {
+      this.props.postTrip(formData);
+    } else {
+      this.setState({
+        error: "Please enter future dates."
+      });
+    }
   };
 
   render() {
     return (
       <Segment>
+        {this.state.error ? <Error message={this.state.error} /> : null}
         <Header as="h1">
           <Icon name="plane" />
           <Header.Content>
