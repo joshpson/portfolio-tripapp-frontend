@@ -37,9 +37,7 @@ class NewTripContainer extends React.Component {
         feature.hasOwnProperty("wikidata")
       ).wikidata;
     }
-    fetch(
-      `https://cryptic-headland-94862.herokuapp.com/https://www.wikidata.org/w/api.php?action=wbgetclaims&entity=${wikiDataId}&property=P18&format=json`
-    )
+    RailsApi.wikiPhoto(wikiDataId)
       .then(res => res.json())
       .then(json =>
         this.createImage(json.claims.P18["0"].mainsnak.datavalue.value)

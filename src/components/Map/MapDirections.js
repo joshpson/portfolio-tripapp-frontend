@@ -59,7 +59,6 @@ class MapDirections extends React.Component {
   };
 
   addRoute = response => {
-    console.log(response);
     const coords = response.routes[0].geometry;
     this.map.addLayer({
       id: "route",
@@ -153,7 +152,9 @@ class MapDirections extends React.Component {
               >{`${minutes} minutes (${miles} miles)`}</Header.Subheader>
             </Header>
             <List animated verticalAlign="middle" divided relaxed>
-              {this.state.steps.map(step => <MapDirectionList step={step} />)}
+              {this.state.steps.map(step => {
+                return <MapDirectionList step={step} key={step.distance} />;
+              })}
             </List>
           </div>
         )}

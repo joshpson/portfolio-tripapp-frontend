@@ -1,15 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import { Card, Icon, Image } from "semantic-ui-react";
 import Moment from "react-moment";
 import RailsApi from "../RailsApi";
 
 class UserTrips extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   activeTrips = () => {
     return this.props.trips.filter(trip => trip.status === true);
   };

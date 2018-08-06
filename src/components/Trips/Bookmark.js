@@ -1,7 +1,7 @@
-import React from 'react';
-import { Icon, Item, Label } from 'semantic-ui-react';
-import _ from 'lodash';
-import YelpPhotos from '../YelpSearch/YelpPhotos';
+import React from "react";
+import { Icon, Item, Label } from "semantic-ui-react";
+import _ from "lodash";
+import YelpPhotos from "../YelpSearch/YelpPhotos";
 
 const YelpSearchCard = ({ result, showDirections }) => (
   <Item>
@@ -11,10 +11,13 @@ const YelpSearchCard = ({ result, showDirections }) => (
         {result.name}
       </Item.Header>
       <Item.Meta>
-        {_.times(Math.round(result.rating), () => <Icon color="yellow" name="star" />)}
+        {_.times(Math.round(result.rating), () => (
+          <Icon color="yellow" name="star" />
+        ))}
       </Item.Meta>
       <Item.Description>
-        {result.location.display_address[0]} <br /> {result.location.display_address[1]}
+        {result.location.display_address[0]} <br />{" "}
+        {result.location.display_address[1]}
         <br />
         {result.display_phone}
         <YelpPhotos id={result.id} />

@@ -110,6 +110,26 @@ export default {
     });
   },
 
+  mapBoxToken: () => {
+    return fetch(`${url}/mapboxtoken`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token()}`
+      }
+    });
+  },
+
+  wikiPhoto: id => {
+    return fetch(`${url}/wikiphoto?id=${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token()}`
+      }
+    });
+  },
+
   yelpCategories: () => {
     return fetch(`${url}/categories`, {
       headers: {
@@ -120,8 +140,8 @@ export default {
     });
   },
 
-  yelpPhotos: businessId => {
-    return fetch(`${url}/photos?business=${businessId}`, {
+  yelpData: businessId => {
+    return fetch(`${url}/data?business=${businessId}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

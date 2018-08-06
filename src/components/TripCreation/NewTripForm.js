@@ -1,7 +1,7 @@
 import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, Grid, Segment, Header, Icon } from "semantic-ui-react";
+import { Form, Segment, Header, Icon } from "semantic-ui-react";
 import Error from "../Error";
 
 class NewTripForm extends React.Component {

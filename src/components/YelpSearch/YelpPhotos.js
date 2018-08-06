@@ -14,7 +14,7 @@ class YelpPhotos extends React.Component {
   };
 
   getInfo = id => {
-    RailsApi.yelpPhotos(id)
+    RailsApi.yelpData(id)
       .then(res => res.json())
       .then(json => this.setInfo(json));
   };
@@ -53,7 +53,7 @@ class YelpPhotos extends React.Component {
           <Modal.Content>
             <Card.Group centered itemsPerRow={3}>
               {this.state.photos.map(photo => (
-                <Card image={photo} verticalAlign="middle" />
+                <Card image={photo} key={photo} />
               ))}
             </Card.Group>
           </Modal.Content>

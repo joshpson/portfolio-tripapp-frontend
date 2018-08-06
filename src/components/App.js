@@ -1,14 +1,11 @@
 import React from "react";
-import { Route, Switch, withRouter, Redirect } from "react-router-dom";
-import { Segment } from "semantic-ui-react";
+import { Route, Switch, withRouter } from "react-router-dom";
 import Nav from "./Nav";
 import RailsApi from "./RailsApi";
 import UserTrips from "./Trips/UserTrips";
 import Trip from "./Trips/Trip";
 import UserContainer from "./User/UserContainer";
 import NewTripContainer from "./TripCreation/NewTripContainer";
-import YelpSearchContainer from "./YelpSearch/YelpSearchContainer";
-import Error from "./Error";
 
 class App extends React.Component {
   constructor(props) {

@@ -1,44 +1,46 @@
-import React from 'react';
-import mapboxgl from 'mapbox-gl';
-import bbox from '@turf/bbox';
-
-mapboxgl.accessToken =
-  'pk.eyJ1IjoiYWRhbWNvaG4iLCJhIjoiY2pod2Z5ZWQzMDBtZzNxcXNvaW8xcGNiNiJ9.fHYsK6UNzqknxKuchhfp7A';
+import React from "react";
+import mapboxgl from "mapbox-gl";
+import bbox from "@turf/bbox";
+import RailsApi from "../RailsApi";
 
 class Map extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
-    this.map = new mapboxgl.Map({
-      container: this.mapContainer,
-      style: 'mapbox://styles/mapbox/streets-v9',
-      center: this.props.userLocation,
-      zoom: 11,
-    });
-
-    this.map.on('load', () => {
-      this.map.addLayer(this.renderPoints());
-      this.createBoundingBox();
-      this.mapActions();
-      const marker = new mapboxgl.Marker().setLngLat(this.props.userLocation).addTo(this.map);
-    });
+    RailsApi.mapBoxToken()
+      .then(resp => {
+        return resp.json();
+      })
+      .then(json => {
+        mapboxgl.accessToken = json.token;
+        this.map = new mapboxgl.Map({
+          container: this.mapContainer,
+          style: "mapbox://styles/mapbox/streets-v9",
+          center: this.props.userLocation,
+          zoom: 11
+        });
+        this.map.on("load", () => {
+          this.map.addLayer(this.renderPoints());
+          this.createBoundingBox();
+          this.mapActions();
+          new mapboxgl.Marker()
+            .setLngLat(this.props.userLocation)
+            .addTo(this.map);
+        });
+      });
   }
 
   componentDidUpdate(nextProps) {
     if (this.props.points !== nextProps.points) {
-      this.map.removeLayer('venues');
-      this.map.removeSource('venues');
+      this.map.removeLayer("venues");
+      this.map.removeSource("venues");
       this.map.addLayer(this.renderPoints());
       this.createBoundingBox();
     }
   }
 
   mapActions = () => {
-    this.map.on('click', 'venues', e => {
+    this.map.on("click", "venues", e => {
       var features = this.map.queryRenderedFeatures(e.point, {
-        layers: ['venues'],
+        layers: ["venues"]
       });
 
       if (!features.length) {
@@ -46,23 +48,22 @@ class Map extends React.Component {
       }
 
       var feature = features[0];
-      console.log(feature);
-      var popup = new mapboxgl.Popup({ offset: [0, -15] })
+      new mapboxgl.Popup({ offset: [0, -15] })
         .setLngLat(feature.geometry.coordinates)
         .setHTML(
-          `<h3>${feature.properties.name}</h3> <p>${feature.properties.addressOne}</p><p>${
-            feature.properties.addressTwo
-          }</p>`,
+          `<h3>${feature.properties.name}</h3> <p>${
+            feature.properties.addressOne
+          }</p><p>${feature.properties.addressTwo}</p>`
         )
         .setLngLat(feature.geometry.coordinates)
         .addTo(this.map);
     });
 
-    this.map.on('mouseenter', 'venues', () => {
-      this.map.getCanvas().style.cursor = 'pointer';
+    this.map.on("mouseenter", "venues", () => {
+      this.map.getCanvas().style.cursor = "pointer";
     });
-    this.map.on('mouseleave', 'venues', () => {
-      this.map.getCanvas().style.cursor = '';
+    this.map.on("mouseleave", "venues", () => {
+      this.map.getCanvas().style.cursor = "";
     });
   };
 
@@ -71,49 +72,52 @@ class Map extends React.Component {
   }
 
   createBoundingBox() {
-    const boundingBox = bbox(this.map.getSource('venues')._data);
+    const boundingBox = bbox(this.map.getSource("venues")._data);
     this.map.fitBounds(boundingBox, { padding: 30 });
   }
 
   renderPoints = () => {
     return {
-      id: 'venues',
-      type: 'circle',
+      id: "venues",
+      type: "circle",
       source: {
-        type: 'geojson',
+        type: "geojson",
         data: {
-          type: 'FeatureCollection',
+          type: "FeatureCollection",
           features: this.props.points.map(venue => ({
-            type: 'Feature',
+            type: "Feature",
             properties: {
               yelpId: venue.id,
               name: venue.name,
               addressOne: venue.location.display_address[0],
-              addressTwo: venue.location.display_address[1],
+              addressTwo: venue.location.display_address[1]
             },
             geometry: {
-              type: 'Point',
-              coordinates: [venue.coordinates.longitude, venue.coordinates.latitude],
-            },
-          })),
-        },
+              type: "Point",
+              coordinates: [
+                venue.coordinates.longitude,
+                venue.coordinates.latitude
+              ]
+            }
+          }))
+        }
       },
       paint: {
-        'circle-color': '#F15A2D',
-        'circle-radius': 6,
-        'circle-stroke-width': 1.7,
-        'circle-stroke-color': '#ffffff',
-      },
+        "circle-color": "#F15A2D",
+        "circle-radius": 6,
+        "circle-stroke-width": 1.7,
+        "circle-stroke-color": "#ffffff"
+      }
     };
   };
 
   render() {
     const style = {
-      position: 'relative',
+      position: "relative",
       top: 0,
       bottom: 0,
-      width: '100%',
-      minHeight: 400,
+      width: "100%",
+      minHeight: 400
     };
 
     return <div style={style} ref={el => (this.mapContainer = el)} />;
