@@ -1,5 +1,5 @@
-// const url = "https://afternoon-anchorage-69912.herokuapp.com/api/v1";
-const url = "http://localhost:3000/api/v1";
+const url = "https://afternoon-anchorage-69912.herokuapp.com/api/v1";
+// const url = "http://localhost:3000/api/v1";
 
 const token = () => {
   return localStorage.getItem("token");
