@@ -10,7 +10,7 @@ class Login extends React.Component {
     this.state = {
       email: "",
       password: "",
-      newUser: true,
+      newUser: false,
       loginError: false
     };
   }
@@ -131,6 +131,10 @@ class Login extends React.Component {
           <Button secondary fluid onClick={this.changeUserState}>
             {this.state.newUser ? "Sign In" : "Sign Up"}
           </Button>
+          <br />
+          <p>
+            Demo Account: <br /> Email: demo@demo.com <br /> Password: demo
+          </p>
         </Segment>
       </div>
     );
